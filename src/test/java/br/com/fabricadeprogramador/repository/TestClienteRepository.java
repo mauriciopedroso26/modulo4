@@ -1,7 +1,13 @@
 package br.com.fabricadeprogramador.repository;
 
 import javax.persistence.EntityManager;
+
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.Assert.assertTrue;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -42,6 +48,28 @@ public class TestClienteRepository {
 		Assert.assertNotNull(cliEncontrado.getEmail());
 		assertThat(cliEncontrado.getNome()).isEqualTo(cli.getNome());
 		assertThat(cliEncontrado.getEmail()).isEqualTo(cli.getEmail());
+	}
+	
+	@Test
+	public void testBuscarTodos() {
+		Cliente cliJao = new Cliente("Jão", "jao@htcursos.com");
+		Cliente cliZe = new Cliente("Zé", "ze2@htcursos.com");
+		
+		entityManager.persist(cliJao);
+		entityManager.persist(cliZe);
+		
+		List<Cliente> lista = clienteRepository.buscarTodos();
+		
+		assertThat(lista.get(0).getNome()).isEqualTo(cliJao.getNome());
+		assertThat(lista.get(1).getNome()).isEqualTo(cliZe.getNome());
+		
+		String aux = "";
+		for(int i = 0; i < lista.size(); i++) {
+				aux += lista.get(i).toString();
+		}
+		
+		assertTrue(aux.contains(cliJao.getNome()));
+		assertTrue(aux.contains(cliZe.getNome()));
 	}
 	
 }
